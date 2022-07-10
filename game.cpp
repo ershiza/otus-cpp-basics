@@ -7,9 +7,6 @@
 
 void playGame(int max_value)
 {
-    if (max_value == -1)
-        return;
-
 	std::srand(std::time(nullptr));
 
 	const int target_value = std::rand() % max_value;
@@ -37,7 +34,7 @@ void playGame(int max_value)
             std::cout << "Нужно ввести число: ";
         }
 
-	} while(compare(current_value, target_value));
+	} while(notEqual(current_value, target_value));
 
     std::cout << "Количество попыток: " << attempts_count << std::endl << std::endl;
 
@@ -45,12 +42,11 @@ void playGame(int max_value)
 	writeHighScore(user_name, attempts_count);
 
 	readScoreTable();
-    readHighScoreTable();
 
     return;
 }
 
-bool compare(int current_value, int target_value)
+bool notEqual(int current_value, int target_value)
 {
 	if (current_value > target_value) {
 		std::cout << "Загаданное число < " << current_value << std::endl;

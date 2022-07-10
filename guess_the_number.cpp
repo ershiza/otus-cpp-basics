@@ -2,7 +2,5 @@
 
 int main(int argc, char** argv) {
 
-	parseArguments(argc, argv);
-
-	return 0;
+	return parseArguments(argc, argv);;
 }

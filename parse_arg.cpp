@@ -5,7 +5,7 @@
 #include <iostream>
 #include <string>
 
-bool parseArguments(int argc, char** argv)
+int parseArguments(int argc, char** argv)
 {
     if (argc >= 4) 
     {
@@ -22,17 +22,24 @@ bool parseArguments(int argc, char** argv)
     else
     {
         std::string arg1_value{argv[1]};
-		if (arg1_value == "-max")
+		if (arg1_value == "-max" && isValidMaxArg(argc, argv))
         {
-			parseMax(argc, argv);
+			int parameter_value = std::stoi(argv[2]);
+			std::cout << "The '-max' value = " << parameter_value << std::endl;
+
+			playGame(parameter_value);
+			
         }
-        else if (arg1_value == "-level")
+        else if (arg1_value == "-level" && isValidLevelArg(argc, argv))
         {
-			parseLevel(argc, argv);
+			int parameter_value = std::stoi(argv[2]);
+			std::cout << "The '-level' value = " << parameter_value << std::endl;
+
+			playGame(maxValueByLevel.find(parameter_value)->second);
         }
-        else if (arg1_value == "-table")
+        else if (arg1_value == "-table" && isValidTableArg(argc, argv))
         {
-			parseTable(argc, argv);
+			readHighScoreTable();
         }
         else
         {
@@ -44,59 +51,54 @@ bool parseArguments(int argc, char** argv)
 	return 0;
 }
 
-bool parseMax(int argc, char** argv)
+bool isValidMaxArg(int argc, char** argv)
 {
 	std::cout << "-max argument was detected!" << std::endl;
 
-	int parameter_value = 0;
 	if (argc < 3) {
-		std::cout << "Wrong usage! The argument '-max' requires some value!" << std::endl;
-		return -1;
+		std::cout << "The argument '-max' requires some value!" << std::endl;
+		return false;
 	}
 
-	parameter_value = std::stoi(argv[2]);
-	std::cout << "The '-max' value = " << parameter_value << std::endl;
+	int parameter_value = std::stoi(argv[2]);
 
-	playGame(parameter_value);
+	if (parameter_value < 1)
+	{
+		std::cout << "The argument '-max' must be a positive number!" << std::endl;
+		return false;
+	}
 
-	return 0;
+	return true;
 }
 
-bool parseLevel(int argc, char** argv)
+bool isValidLevelArg(int argc, char** argv)
 {
 	std::cout << "-level argument was detected!" << std::endl;
 
-	int parameter_value = 0;
 	if (argc < 3) {
-		std::cout << "Wrong usage! The argument '-level' requires value = 1, 2, 3!" << std::endl;
-		return -1;
+		std::cout << "The argument '-level' requires value = 1, 2, 3!" << std::endl;
+		return false;
 	}
 
-	parameter_value = std::stoi(argv[2]);
+	int parameter_value = std::stoi(argv[2]);
 
 	if (parameter_value != 1 && parameter_value != 2 && parameter_value != 3)
 	{
-		std::cout << "Wrong usage! The argument '-level' requires value = 1, 2, 3!" << std::endl;
-		return -1;
+		std::cout << "The argument '-level' requires value = 1, 2, 3!" << std::endl;
+		return false;
 	}
-            
-	std::cout << "The '-level' value = " << parameter_value << std::endl;
 
-	playGame(getMaxValue.find(parameter_value)->second);
-
-	return 0;
+	return true;
 }
 
-bool parseTable(int argc, char** argv)
+bool isValidTableArg(int argc, char** argv)
 {
 	std::cout << "-table argument was detected!" << std::endl;
 
 	if (argc > 2) {
-		std::cout << "Wrong usage!" << std::endl;
-		return -1;
+		std::cout << "The argument '-table' should not contain additional parameters!" << std::endl;
+		return false;
 	}
 
-	readHighScoreTable();
-
-	return 0;
+	return true;
 }

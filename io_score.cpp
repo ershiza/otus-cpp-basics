@@ -12,7 +12,7 @@ bool writeScore(std::string user_name, int attempts_count)
 	std::ofstream out_file{scores_filename, std::ios_base::app};
 	if (!out_file.is_open()) {
 		std::cout << "Failed to open file for write: " << scores_filename << "!" << std::endl;
-		return -1;
+		return false;
 	}
 
 	out_file << user_name << ' ';
@@ -21,7 +21,7 @@ bool writeScore(std::string user_name, int attempts_count)
 
 	std::cout << "Запись результа в файл " << scores_filename << ": " << user_name << ' ' << attempts_count << std::endl;
 
-	return 0;
+	return true;
 }
 
 bool writeHighScore(std::string user_name, int attempts_count)
@@ -29,7 +29,7 @@ bool writeHighScore(std::string user_name, int attempts_count)
 	std::fstream out_file{high_scores_filename, std::ios_base::in};
 	if (!out_file.is_open()) {
 		std::cout << "Failed to open file for write: " << high_scores_filename << "!" << std::endl;
-		return -1;
+		return false;
 	}
 
 	std::cout << high_scores_filename << ":" << std::endl;
@@ -58,7 +58,7 @@ bool writeHighScore(std::string user_name, int attempts_count)
 				std::cout << "Запись в " << high_scores_filename << " не требуется. Результат не стал лучше." << std::endl;
 
 				out_file.close();
-				return 0;
+				return true;
 			}			
 		}
 		else 
@@ -74,7 +74,7 @@ bool writeHighScore(std::string user_name, int attempts_count)
 
 		if (!buf_file.is_open()) {
 			std::cout << "Failed to open file for write: " << buf_filename << "!" << std::endl;
-			return -1;
+			return false;
 		}
 
 		for (auto x : buf)
@@ -96,7 +96,7 @@ bool writeHighScore(std::string user_name, int attempts_count)
 		out_file.open(high_scores_filename, std::ios_base::out | std::ios_base::app);
 		if (!out_file.is_open()) {
 			std::cout << "Failed to open file for write: " << high_scores_filename << "!" << std::endl;
-			return -1;
+			return false;
 		}
 
 		out_file << user_name << ' ';
@@ -108,7 +108,7 @@ bool writeHighScore(std::string user_name, int attempts_count)
 		std::cout << "Запись нового игрока в файл " << high_scores_filename << std::endl;
 	}
 
-	return 0;
+	return true;
 }
 
 bool readScoreTable()
@@ -116,7 +116,7 @@ bool readScoreTable()
 	std::ifstream in_file{scores_filename};
 	if (!in_file.is_open()) {
 		std::cout << "Failed to open file for read: " << scores_filename << "!" << std::endl;
-		return -1;
+		return false;
 	}
 
 	std::cout << "Лучшие результаты из файла " << scores_filename << ":" << std::endl;
@@ -147,7 +147,7 @@ bool readScoreTable()
 	for (auto x : users_score)
 		std::cout << x.first << '\t' << x.second << std::endl;
 
-    return 0;
+    return true;
 }
 
 bool readHighScoreTable()
@@ -155,7 +155,7 @@ bool readHighScoreTable()
 	std::ifstream in_file{high_scores_filename};
 	if (!in_file.is_open()) {
 		std::cout << "Failed to open file for read: " << high_scores_filename << "!" << std::endl;
-		return -1;
+		return false;
 	}
 
 	std::cout << "Лучшие результаты из файла " << high_scores_filename << ":" << std::endl;
@@ -175,5 +175,5 @@ bool readHighScoreTable()
 		std::cout << user_name << '\t' << high_score << std::endl;
 	}
 
-	return 0;
+	return true;
 }
